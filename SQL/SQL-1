@@ -1,0 +1,86 @@
+SELECT FirstName as 'Nick Name'
+FROM employees;
+
+
+/* How many invoices are in the digital music store? */
+
+SELECT count(InvoiceId)
+FROM invoices ;
+
+
+/*How many Composers are there in the digital music store */
+
+SELECT count(DISTINCT Composer)
+FROM tracks;
+
+
+/* Find the track name having the minimum duration*/
+
+SELECT name as Track_Name , min(Milliseconds) as Duration
+	FROM tracks;
+	
+
+	/*Find the track name having the maximum duration  */
+
+SELECT name as Track_Name , max(Milliseconds) as Duration
+	FROM tracks;
+	
+
+/*How much money did our store earn?*/	
+
+SELECT sum (total) as Total_Earn
+	FROM invoices;
+	
+
+/*How much money average did our store earn?*/	
+SELECT avg( total) as Average_Earn
+	FROM invoices;
+
+
+/* Find the tracks having duration bigger than the average duration.*/
+SELECT avg (Milliseconds)
+FROM tracks;
+
+SELECT * FROM tracks WHERE Milliseconds > 393599.212103911;
+
+SELECT Name, Milliseconds
+	FROM tracks
+	WHERE Milliseconds > ( 	SELECT AVG(Milliseconds)
+										FROM tracks);
+
+
+/* Find the total number of the each Composer's track. Your result will include 
+name of the composer and number. */
+SELECT Composer, count(Composer) as Song_Count
+FROM tracks
+WHERE Composer is not NULL
+GROUP by Composer;
+
+
+/* How many customers do we have from each country? 
+Your result will include name of the country and number.*/
+SELECT Country, count(FirstName) as num_of_cust_by_country
+FROM customers
+GROUP by Country DESC
+LIMIT 3;
+	
+	SELECT Country, City, count(FirstName) as num_of_cust_by_country
+	FROM customers
+	GROUP by Country, City
+	ORDER by num_of_cust_by_country DESC
+	LIMIT 3;
+	
+	
+/* Find the minumum duration of track for each album.
+Your result will include album id and min duration*/
+SELECT AlbumId, Composer, min(Milliseconds)
+FROM tracks
+WHERE Composer IS NOT NULL
+GROUP BY AlbumId, Composer;
+
+
+/* Find the total amount of invoice for each country.
+Your result will include country name and total amount. */
+SELECT BillingCountry, sum(total)
+FROM invoices
+GROUP BY BillingCountry;
